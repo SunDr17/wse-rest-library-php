@@ -95,4 +95,20 @@ class Application extends Wowza
     {
         return $this->name;
     }
+    
+    public function getIncommingStreams()
+    {
+        $this->setNoParams();
+        $this->restURI .= '/instances';
+
+        return $this->sendRequest($this->preparePropertiesForRequest(self::class), [], self::VERB_GET);
+    }
+
+    private function setNoParams()
+    {
+        $this->_skip["group"] = true;
+        $this->_skip["sourceStreamName"] = true;
+        $this->_skip["entryName"] = true;
+        $this->_skip["streamName"] = true;
+    }
 }
