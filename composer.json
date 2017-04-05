@@ -1,5 +1,5 @@
 {
-  "name": "wowza/wse-rest-library-php",
+  "name": "sundr17/wse-rest-library-php",
   "homepage": "https://www.wowza.com",
   "autoload": {
     "psr-4": {
