@@ -21,6 +21,7 @@ class StreamFile extends Wowza
         Settings $settings,
         $appName = null,
         $streamFileName = null,
+        $mediaCasterType = null,
         $serverInstance = "_defaultServer_",
         $vhostInstance = "_defaultVHost_"
     ) {
@@ -33,6 +34,10 @@ class StreamFile extends Wowza
 
         if (!is_null($streamFileName)) {
             $this->name = $streamFileName;
+        }
+
+        if (!is_null($mediaCasterType)) {
+            $this->_mediaCasterType = $mediaCasterType;
         }
     }
 
@@ -51,15 +56,16 @@ class StreamFile extends Wowza
         return $this->sendRequest($this->preparePropertiesForRequest(self::class), [], self::VERB_GET);
     }
 
-    public function create($urlProps, $mediaCasterType = "rtp", $applicationInstance = "_definst_")
+    public function create($urlProps, $applicationInstance = "_definst_")
     {
         $sf = new Entities\Application\StreamFiles();
-        $sf->id = "connectAppName=" . $this->_applicationName . "&appInstance={$applicationInstance}&mediaCasterType={$mediaCasterType}";
+        $sf->id = "connectAppName=" . $this->_applicationName . "&appInstance={$applicationInstance}&mediaCasterType={$this->_mediaCasterType}";
         $sf->href = $this->restURI . "/streamfiles/" . $sf->id;
 
         $entities = $this->getEntites([$sf], null);
         $this->restURI = $this->restURI . "/" . $this->name;
         $response = $this->sendRequest($this->preparePropertiesForRequest(self::class), $entities);
+
         if ($response->success) {
             $items = $this->getAdvancedSettings($urlProps);
 
@@ -128,6 +134,7 @@ class StreamFile extends Wowza
 // 		$this->_additional["appInstance"]=$this->_applicationInstance;
 // 		$this->_additional["mediaCasterType"]=$this->_mediaCasterType;
         $streamFilePath = (!empty($subFolder)) ? urlencode($subFolder . "/" . $this->name) : $this->name;
+
         $this->restURI = $this->restURI . "/" . $streamFilePath . "/actions/connect";
 
         return $this->sendRequest($this->preparePropertiesForRequest(self::class), [], self::VERB_PUT,
