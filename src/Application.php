@@ -14,6 +14,7 @@ class Application extends Wowza
     protected $clientStreamReadAccess = "*";
     protected $clientStreamWriteAccess = "*";
     protected $description = "";
+    protected $applicationInstance = "_definst_";
 
     public function __construct(
         Settings $settings,
@@ -100,6 +101,15 @@ class Application extends Wowza
     {
         $this->setNoParams();
         $this->restURI .= '/instances';
+
+        return $this->sendRequest($this->preparePropertiesForRequest(self::class), [], self::VERB_GET);
+    }
+
+    public function getIncomingStreamMonitoring(string $streamName)
+    {
+        $this->setNoParams();
+        $this->restURI .= '/instances/' . $this->applicationInstance
+            . '/incomingstreams/' . $streamName . '/monitoring/current';
 
         return $this->sendRequest($this->preparePropertiesForRequest(self::class), [], self::VERB_GET);
     }
