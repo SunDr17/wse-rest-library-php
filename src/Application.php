@@ -105,7 +105,7 @@ class Application extends Wowza
         return $this->sendRequest($this->preparePropertiesForRequest(self::class), [], self::VERB_GET);
     }
 
-    public function getIncomingStreamMonitoring(string $streamName)
+    public function getIncomingStreamMonitoring($streamName)
     {
         $this->setNoParams();
         $this->restURI .= '/instances/' . $this->applicationInstance
