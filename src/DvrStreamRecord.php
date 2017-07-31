@@ -33,11 +33,11 @@ class DvrStreamRecord extends Wowza
         }
     }
 
-    public function record($action = "start", $recordingName = null) {
+    public function record($action = "start", $recordingPostfix = null) {
         $queryParams = "app={$this->_applicationName}&streamgroupname={$this->name}&action={$action}";
 
-        if (!is_null($recordingName)) {
-            $queryParams .= "&recordingname={$recordingName}";
+        if (!is_null($recordingPostfix)) {
+            $queryParams .= "&recordingpostfix={$recordingPostfix}";
         }
 
         $response = $this->sendRequest($this->preparePropertiesForRequest(self::class), [], self::VERB_POST, $queryParams);
